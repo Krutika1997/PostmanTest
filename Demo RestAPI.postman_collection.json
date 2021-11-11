@@ -1,0 +1,837 @@
+{
+	"info": {
+		"_postman_id": "221bc7d1-2e58-4c39-ba26-3bbaae60bf20",
+		"name": "Demo RestAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Folder",
+			"item": [
+				{
+					"name": "tokenVal",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Find",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "httpbin.org/bearer",
+							"host": [
+								"httpbin",
+								"org"
+							],
+							"path": [
+								"bearer"
+							]
+						},
+						"description": "Adding a authorization token to run the request."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Local Variable Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Hiiiiiiiii\");\r",
+							"pm.globals.get(\"variable_key\");\r",
+							"\r",
+							"let UrlVal= pm.variables.get(\"Url\");\r",
+							"console.log(\"Value of Url is \"+ UrlVal);\r",
+							"\r",
+							"console.log(pm.variables.set(\"Name\",\"POSTMAN\"));\r",
+							"console.log(\"Value of name is \"+ pm.variables.get(\"Name\"));\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Find",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/users?page=2",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				},
+				"description": "Creating local variables and printing the values in console screen and verify the Status code is 200."
+			},
+			"response": []
+		},
+		{
+			"name": "singleRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var Respons= JSON.parse(responseBody);\r",
+							"tests[\"First name\"]= Respons.data.first_name == \"Janet\";\r",
+							"tests[\"Last name\"]= Respons.data.last_name == \"Weaver\";\r",
+							"\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data.first_name).to.eql(\"Janet\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				},
+				"description": "Getting the details of the 2nd user and comparing the first name and last name"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Post request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var Respons= JSON.parse(responseBody);\r",
+							"tests[\"name\"]= Respons.name == \"morphous\";\r",
+							"tests[\"Job\"]= Respons.job == \"Leader\";\r",
+							"//tests[\"Last name\"]= responsCode.code == 201;\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"morphous\",\r\n\"job\":\"Leader\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Adding the new user with name and job."
+			},
+			"response": []
+		},
+		{
+			"name": "Set Global Variable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let Response= pm.response.json();\r",
+							"pm.globals.set(\"uuid\", Response.uuid);\r",
+							"pm.globals.set(\"GlobalVar\", \"GlobalVar_value\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://httpbin.org/uuid",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"uuid"
+					]
+				},
+				"description": "Get the Uuid from response and set it as a new Global variable."
+			},
+			"response": []
+		},
+		{
+			"name": "Use Global Variable",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "MyHeader",
+						"value": "Common Header",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\":\"morphous\",\r\n\"job\":\"Leader\",\r\n\"id\":\"{{uuid}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				},
+				"description": "Creating a user with name, job and uuid(present in the global variable)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Header",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Do-Not-Track",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://reqres.in/",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Adding a new value in the request header."
+			},
+			"response": []
+		},
+		{
+			"name": "Import Request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "api-gateway.trello.com"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"93\", \" Not;A Brand\";v=\"99\", \"Chromium\";v=\"93\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "content-type",
+						"value": "text/plain"
+					},
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "origin",
+						"value": "https://trello.com"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-site"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "referer",
+						"value": "https://trello.com/"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "cookie",
+						"value": "ajs_group_id=null; ajs_anonymous_id=%22debcc404-1f8f-4a7c-a473-3bb4cbd1468e%22; _sp_ses.dc4d=*; _ga=GA1.2.1527780988.1632132666; _gid=GA1.2.1685906162.1632132666; _gac_UA-53826304-2=1.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_aw=GCL.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_dc=GCL.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_au=1.1.1649059867.1632132666; _biz_sid=661fe2; _mkto_trk=id:594-ATC-127&token:_mch-trello.com-1632132666717-95323; _biz_uid=93e58bb344b24a25b54f28caf4865d62; _cs_c=1; _CT_RS_=Recording; WRUIDAWS=3474428236514483; _biz_flagsA=%7B%22Version%22%3A1%2C%22ViewThrough%22%3A%221%22%2C%22XDomain%22%3A%221%22%2C%22Mkto%22%3A%221%22%7D; G_ENABLED_IDPS=google; _biz_nA=5; _uetsid=11c17cb019fb11ecb347ff5bf2ffb848; _uetvid=11c1ce8019fb11ec8b493d6a59270cfd; _biz_pendingA=%5B%5D; _cs_id=90a2ad01-da13-a903-ff71-5c946361ce0c.1632132670.1.1632132835.1632132670.1.1666296670294; _cs_s=3.1.0.1632134635050; __CT_Data=gpv=3&ckp=tld&dm=trello.com&apv_45_www33=3&cpv_45_www33=3&rpv_45_www33=3; _sp_id.dc4d=619b4928-935e-4f75-93c7-585aed5070dd.1632132666.1.1632133034.1632132666.7d73f682-7e9b-48c1-a620-1f8d16140290; __cid=YmZdHQ4oZgGPLTTa_R9f_vEtdK81bmHLXlQA1k5VFYZ60wvVPVYz-0VgA-hQEuHWElH4Gcw6XNVFqPdmAlkLqTknRrknPGe6PHo--G11I4E0O2-5KiYrmAl1OuZzZTD2Cjxl4GluK65rYSL2HCV7ujgCbrQWPH_5aGY8-G5jK_4WHV-bEXkrujQ-bvYaMGi9MnwrlTUnZLs4ejLlc2Ul4mhiPPhlZyuFPDNqpDR6PuVqezjgMVJt52ljaeU_IgjR1lWf3jlsbuVqMzmywQdKmBoZTvZ1G12fGRxK-n0bXZ8ZHEr2DCBqsi86K51vZDvmEHVPvy8waKJuETrnfSN4iWgKO_YtJlTjAmUn9hlmT-dseDnjc2c6-GxhJeRoYDj_-UE6-Wx6Ou9qZSf2aG845mdlO_YcGKTeXeAqE-vTwNaOVNZVC7ILPV6iQXGeRTUpXx3L1ulVC9ZdVQvWXVUL1l1VC9ZdVQvW5zOxsB1VS5ZdVQvWHRVLlh0VC9ZdVZumHRVLll1VylotUAvWXVUL1lxV9A"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"timestamp\":\"2021-09-20T10:17:13.635Z\",\"context\":{\"locale\":\"en-US\",\"screen\":{\"width\":1536,\"height\":864,\"density\":1.25},\"library\":{\"name\":\"analytics.js\",\"version\":\"1.12.5\"},\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36\"},\"integrations\":{},\"properties\":{\"env\":\"prod\",\"product\":\"trello\",\"origin\":\"web\",\"platform\":\"web\",\"tenantIdType\":\"none\",\"title\":\"\",\"path\":\"\",\"url\":\"\",\"referrer\":\"\",\"search\":\"\",\"eventType\":\"screen\",\"attributes\":{\"isMarketingEvent\":true},\"tabId\":\"642d26a5-802d-46e8-9115-6c6eb1c63214\",\"sessionId\":\"1632132665803\",\"taskSessions\":{},\"name\":\"homeScreen\"},\"category\":null,\"name\":\"homeScreen\",\"messageId\":\"ajs-6ba6a624a220db34f1c5e14e14099f8b\",\"anonymousId\":\"debcc404-1f8f-4a7c-a473-3bb4cbd1468e\",\"type\":\"page\",\"writeKey\":\"\",\"userId\":null,\"sentAt\":\"2021-09-20T10:17:14.169Z\",\"_metadata\":{\"bundled\":[\"BeforeSend\",\"Segment.io\"],\"unbundled\":[\"Amplitude\"]}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-gateway.trello.com/gateway/api/gasv3/api/v1/p",
+					"protocol": "https",
+					"host": [
+						"api-gateway",
+						"trello",
+						"com"
+					],
+					"path": [
+						"gateway",
+						"api",
+						"gasv3",
+						"api",
+						"v1",
+						"p"
+					]
+				},
+				"description": "Importing the request from trello.com.\nSaving the response as an example."
+			},
+			"response": [
+				{
+					"name": "Example Import Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authority",
+								"value": "api-gateway.trello.com"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"93\", \" Not;A Brand\";v=\"99\", \"Chromium\";v=\"93\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "content-type",
+								"value": "text/plain"
+							},
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "origin",
+								"value": "https://trello.com"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "same-site"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "referer",
+								"value": "https://trello.com/"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9"
+							},
+							{
+								"key": "cookie",
+								"value": "ajs_group_id=null; ajs_anonymous_id=%22debcc404-1f8f-4a7c-a473-3bb4cbd1468e%22; _sp_ses.dc4d=*; _ga=GA1.2.1527780988.1632132666; _gid=GA1.2.1685906162.1632132666; _gac_UA-53826304-2=1.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_aw=GCL.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_dc=GCL.1632132666.CjwKCAjw4qCKBhAVEiwAkTYsPK0iJ7FcUonFlYXj_VB_Qjp10ZFK83TRzm8TZd6o4qo1p-EUSeVXWhoCM9QQAvD_BwE; _gcl_au=1.1.1649059867.1632132666; _biz_sid=661fe2; _mkto_trk=id:594-ATC-127&token:_mch-trello.com-1632132666717-95323; _biz_uid=93e58bb344b24a25b54f28caf4865d62; _cs_c=1; _CT_RS_=Recording; WRUIDAWS=3474428236514483; _biz_flagsA=%7B%22Version%22%3A1%2C%22ViewThrough%22%3A%221%22%2C%22XDomain%22%3A%221%22%2C%22Mkto%22%3A%221%22%7D; G_ENABLED_IDPS=google; _biz_nA=5; _uetsid=11c17cb019fb11ecb347ff5bf2ffb848; _uetvid=11c1ce8019fb11ec8b493d6a59270cfd; _biz_pendingA=%5B%5D; _cs_id=90a2ad01-da13-a903-ff71-5c946361ce0c.1632132670.1.1632132835.1632132670.1.1666296670294; _cs_s=3.1.0.1632134635050; __CT_Data=gpv=3&ckp=tld&dm=trello.com&apv_45_www33=3&cpv_45_www33=3&rpv_45_www33=3; _sp_id.dc4d=619b4928-935e-4f75-93c7-585aed5070dd.1632132666.1.1632133034.1632132666.7d73f682-7e9b-48c1-a620-1f8d16140290; __cid=YmZdHQ4oZgGPLTTa_R9f_vEtdK81bmHLXlQA1k5VFYZ60wvVPVYz-0VgA-hQEuHWElH4Gcw6XNVFqPdmAlkLqTknRrknPGe6PHo--G11I4E0O2-5KiYrmAl1OuZzZTD2Cjxl4GluK65rYSL2HCV7ujgCbrQWPH_5aGY8-G5jK_4WHV-bEXkrujQ-bvYaMGi9MnwrlTUnZLs4ejLlc2Ul4mhiPPhlZyuFPDNqpDR6PuVqezjgMVJt52ljaeU_IgjR1lWf3jlsbuVqMzmywQdKmBoZTvZ1G12fGRxK-n0bXZ8ZHEr2DCBqsi86K51vZDvmEHVPvy8waKJuETrnfSN4iWgKO_YtJlTjAmUn9hlmT-dseDnjc2c6-GxhJeRoYDj_-UE6-Wx6Ou9qZSf2aG845mdlO_YcGKTeXeAqE-vTwNaOVNZVC7ILPV6iQXGeRTUpXx3L1ulVC9ZdVQvWXVUL1l1VC9ZdVQvW5zOxsB1VS5ZdVQvWHRVLlh0VC9ZdVZumHRVLll1VylotUAvWXVUL1lxV9A"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"timestamp\":\"2021-09-20T10:17:13.635Z\",\"context\":{\"locale\":\"en-US\",\"screen\":{\"width\":1536,\"height\":864,\"density\":1.25},\"library\":{\"name\":\"analytics.js\",\"version\":\"1.12.5\"},\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36\"},\"integrations\":{},\"properties\":{\"env\":\"prod\",\"product\":\"trello\",\"origin\":\"web\",\"platform\":\"web\",\"tenantIdType\":\"none\",\"title\":\"\",\"path\":\"\",\"url\":\"\",\"referrer\":\"\",\"search\":\"\",\"eventType\":\"screen\",\"attributes\":{\"isMarketingEvent\":true},\"tabId\":\"642d26a5-802d-46e8-9115-6c6eb1c63214\",\"sessionId\":\"1632132665803\",\"taskSessions\":{},\"name\":\"homeScreen\"},\"category\":null,\"name\":\"homeScreen\",\"messageId\":\"ajs-6ba6a624a220db34f1c5e14e14099f8b\",\"anonymousId\":\"debcc404-1f8f-4a7c-a473-3bb4cbd1468e\",\"type\":\"page\",\"writeKey\":\"\",\"userId\":null,\"sentAt\":\"2021-09-20T10:17:14.169Z\",\"_metadata\":{\"bundled\":[\"BeforeSend\",\"Segment.io\"],\"unbundled\":[\"Amplitude\"]}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-gateway.trello.com/gateway/api/gasv3/api/v1/p",
+							"protocol": "https",
+							"host": [
+								"api-gateway",
+								"trello",
+								"com"
+							],
+							"path": [
+								"gateway",
+								"api",
+								"gasv3",
+								"api",
+								"v1",
+								"p"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 20 Sep 2021 10:20:30 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "bd2df6de8a43f367"
+						},
+						{
+							"key": "Server",
+							"value": "globaledge-envoy"
+						},
+						{
+							"key": "X-Envoy-Upstream-Service-Time",
+							"value": "123"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SameOrigin"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://trello.com"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "X-Trace-Id",
+							"value": "bd2df6de8a43f367"
+						},
+						{
+							"key": "Expect-Ct",
+							"value": "report-uri=\"https://web-security-reports.services.atlassian.com/expect-ct-report/trello-switcher-proxy\", max-age=86400"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=63072000; preload"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Xss-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Atl-Traceid",
+							"value": "bd2df6de8a43f367"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\": \"endpoint-1\", \"max_age\": 600, \"endpoints\": [{\"url\": \"https://dj9s4kmieytgz.cloudfront.net\"}], \"include_subdomains\": true}"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\": \"endpoint-1\", \"max_age\": 600, \"include_subdomains\": true, \"failure_fraction\": 0.001}"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"validationErrors\": null,\n    \"message\": null,\n    \"code\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Environment Variable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"My Var\", \"10\");\r",
+							"let UrlVal= pm.environment.get(\"GlobalVar\");\r",
+							"\r",
+							"console.log(pm.environment.get(\"GlobalVar\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/users?page={{GlobalVar}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{GlobalVar}}"
+						}
+					]
+				},
+				"description": "Creating a environment variable."
+			},
+			"response": []
+		},
+		{
+			"name": "https://api.trello.com/1/boards/?name=Myboard ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "Find",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/?name=Myboard ",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Myboard "
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PreRequest Script",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const Pagenumber=4;\r",
+							"pm.environment.set(\"PageNum\",Pagenumber);\r",
+							"// pm.environment.set(\"PageNum\",Math.random());\r",
+							"console.log(pm.environment.set(\"PageNum\",parseInt(Math.random() * 10)));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/users?page={{PageNum}}",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{PageNum}}"
+						}
+					]
+				},
+				"description": "Adding the prereq code to get the required Page."
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Environment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if(pm.environment.get(\"EnvName\")==\"Environment1\")\r",
+							"{\r",
+							"//console.log(pm.variables.set(\"Name\",\"POSTMAN\"));\r",
+							"console.log(\"Value of name is \"+ pm.variables.get(\"Name\"));\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Url}}/api/users?page=2",
+					"host": [
+						"{{Url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				},
+				"description": "Using condition to verify the environment variable"
+			},
+			"response": []
+		},
+		{
+			"name": "Github",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "krutika1997",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Matryx@1997",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-GitHub-OTP",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.github.com/user/repos",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"user",
+						"repos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://docs.github.com/rest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://docs.github.com/rest",
+					"protocol": "https",
+					"host": [
+						"docs",
+						"github",
+						"com"
+					],
+					"path": [
+						"rest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authorizations",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "krutika1997",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "Matryx@1997",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.github.com/authorizations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"authorizations"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Url",
+			"value": "https://reqres.in"
+		}
+	]
+}
